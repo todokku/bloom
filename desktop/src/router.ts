@@ -1,22 +1,20 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import AuthRouter from '@/bloom/auth/router';
-import KernelRouter from '@/bloom/kernel/router';
-// import ChatRouter from '@/bloom/chat/router';
-import PreferencesRouter from '@/bloom/preferences/router';
-import MusicRouter from '@/bloom/music/router';
-import NotesRouter from '@/bloom/notes/router';
-import ArcadeRouter from '@/bloom/arcade/router';
-import CalendarRouter from '@/bloom/calendar/router';
-import DriveRouter from '@/bloom/drive/router';
-import BitflowRouter from '@/bloom/bitflow/router';
-import ContactsRouter from '@/bloom/contacts/router';
-import GalleryRouter from '@/bloom/gallery/router';
-import CalculatorRouter from '@/bloom/calculator/router';
-import AdminRouter from '@/bloom/admin/router';
-import MyAccountRouter from '@/bloom/myaccount/router';
-import BooksRouter from '@/bloom/books/router';
+import AuthRouter from '@/ui/auth/router';
+import PreferencesRouter from '@/ui/preferences/router';
+import MusicRouter from '@/ui/music/router';
+import NotesRouter from '@/ui/notes/router';
+import ArcadeRouter from '@/ui/arcade/router';
+import CalendarRouter from '@/ui/calendar/router';
+import DriveRouter from '@/ui/drive/router';
+import BitflowRouter from '@/ui/bitflow/router';
+import ContactsRouter from '@/ui/contacts/router';
+import GalleryRouter from '@/ui/gallery/router';
+import CalculatorRouter from '@/ui/calculator/router';
+import AdminRouter from '@/ui/admin/router';
+import MyAccountRouter from '@/ui/myaccount/router';
+import BooksRouter from '@/ui/books/router';
 
 import store from '@/store';
 
@@ -27,8 +25,6 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [
     ...AuthRouter,
-    // ...ChatRouter,
-    ...KernelRouter,
     ...PreferencesRouter,
     ...MusicRouter,
     ...NotesRouter,
@@ -51,7 +47,7 @@ const router = new Router({
 
 
 router.beforeEach((to, _, next) => {
-  if (store.state.is_authenticated === false) {
+  if (store.state.session === null) {
     if (to.path.startsWith('/auth')) {
       next();
     } else {
@@ -62,7 +58,7 @@ router.beforeEach((to, _, next) => {
   }
 
   // if (to.meta.auth && to.meta.auth.required === true) {
-  //   if (store.state.is_authenticated) {
+  //   if (store.state.isAuthenticated) {
   //     next();
   //   } else if (to.meta.auth.redirect) {
   //     next({ path: to.meta.auth.redirect });
@@ -70,7 +66,7 @@ router.beforeEach((to, _, next) => {
   //     next({ path: '/sign-in' });
   //   }
   // } else if (to.meta.auth && to.meta.auth.forbidden) {
-  //   if (store.state.is_authenticated) {
+  //   if (store.state.isAuthenticated) {
   //     next({ path: '/' });
   //   } else {
   //     next();

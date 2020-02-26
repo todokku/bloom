@@ -230,7 +230,7 @@ pub const DEFAULT_TEMPLATE: &str = r##"
             height="100%"
             valign="top"
             bgcolor="">
-            <div style="text-align: center;"><a href="https://phasersec.com">Phaser</a></div>
+            <div style="text-align: center;"><a href="https://bloom.sh">Bloom</a></div>
         </td>
       </tr>
     </table>

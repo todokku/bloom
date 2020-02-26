@@ -1,14 +1,16 @@
 /* eslint-disable camelcase */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { StorePendingAccount } from '@/bloom/auth/models';
+import { StorePendingAccount } from '@/ui/auth/models';
+import * as models from '@/api/models';
 
 Vue.use(Vuex);
 
 interface AppState {
-  is_authenticated: boolean,
-  dark_mode: boolean,
-  pending_account?: StorePendingAccount,
+  darkMode: boolean,
+  pendingAccount?: StorePendingAccount,
+  me: models.User | null,
+  session: models.Session | null,
 }
 
 export enum Mutations {
@@ -17,28 +19,35 @@ export enum Mutations {
   SET_PENDING_ACCOUNT,
   CLEAR_PENDING_ACCOUNT,
   SWITCH_DARK_MODE,
+  UPDATE_DISPLAY_NAME,
 }
 
 export default new Vuex.Store<AppState>({
   state: {
-    is_authenticated: false,
-    dark_mode: false,
+    darkMode: false,
+    me: null,
+    session: null,
   },
   mutations: {
-    [Mutations.SIGN_IN](state) {
-      state.is_authenticated = true;
+    [Mutations.SIGN_IN](state: AppState, params: models.SignedIn) {
+      state.session = params.session;
+      state.me = params.me;
     },
     [Mutations.SIGN_OUT](state) {
-      state.is_authenticated = false;
+      state.session = null;
+      state.me = null;
     },
     [Mutations.SET_PENDING_ACCOUNT](state: AppState, pendginAccount: StorePendingAccount) {
-      state.pending_account = pendginAccount;
+      state.pendingAccount = pendginAccount;
     },
     [Mutations.CLEAR_PENDING_ACCOUNT](state: AppState) {
-      state.pending_account = undefined;
+      state.pendingAccount = undefined;
     },
     [Mutations.SWITCH_DARK_MODE](state: AppState) {
-      state.dark_mode = !state.dark_mode;
+      state.darkMode = !state.darkMode;
+    },
+    [Mutations.UPDATE_DISPLAY_NAME](state: AppState, displayName: string) {
+      state.me!.displayName = displayName;
     },
   },
   actions: {

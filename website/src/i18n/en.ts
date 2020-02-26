@@ -2,7 +2,12 @@ export default {
   labels: {
     other_downloads: 'Other downloads',
     learn_more: 'Learn more',
-    coming_soon_btn: 'Coming early 2020',
+    coming_soon_btn: 'Coming Early 2020',
+    pain1: 'You are done with your privacy invaded by advertisers?',
+    pain2: 'Tired of being abused by Big Companies?',
+    pain3: 'You no longer trust tech monopolies?',
+    pain4: 'Privacy is not dead!',
+
   },
   appbar: {
     download: 'Download',
@@ -27,6 +32,13 @@ export default {
       Go meeting up with Calendar, Notes, Drive and more.<br />
       Never stop having fun.`,
     },
+    feature3: {
+      title: 'Synchronized across all your devices',
+      description: `It's easy to edit your content from anywhere. Start on your laptop
+        then update on your phone. Bloom works on any device or platform. Event the command-line!`,
+    },
+    product_hunt: '#1 Product of the Day',
+    hacker_news: '#1 on',
   },
   p404: {
     not_found: 'Page not found',
@@ -44,6 +56,7 @@ export default {
     product: {
       title: 'Product',
       faq: 'FAQ',
+      pricing: 'Pricing',
       download: 'Download Apps',
       help: 'Help & Support',
       contribute: 'Contribute',
@@ -68,10 +81,10 @@ export default {
     },
     values: {
       title: 'Values',
-      description: 'Cooperation, Acuity, Transparency, Simplicity (<b>CATS</b> 🐱).',
+      description: 'Cooperation, Acuity, Transparency, Sustainability (<b>CATS</b> 🐱).',
     },
     team: {
-      title: 'Core Team',
+      title: 'The Crew',
     },
     sponsors: {
       title: 'Sponsors',
@@ -79,7 +92,8 @@ export default {
     },
     learn_more: {
       title: 'Want to learn more?',
-      wiki: 'Read <b>The Wiki</b>',
+      blog: `We share our strong opinions and crazy ideas about Tech, Design and Humanity on the blog
+      <a href="https://fatalentropy.com" target="_blank" rel="noopener noreferer">Fatal Entropy</a>.`,
     },
     sylvain_title: 'Product design',
   },
@@ -89,10 +103,12 @@ export default {
     email: 'Using email:',
     twitter: 'By saying <i>Hi</i> on Twitter:',
     mastodon: 'On the fediverse:',
+    gitlab: 'Opening an issue on',
+    chatbox: 'Using the chatbox at the bottom right of this website',
   },
   download: {
-    title: 'Take back control!',
-    subtitle: 'Start getting the respect you deserve with our privacy-first apps.',
+    subtitle: 'Take back control!',
+    subtitle2: 'Start getting the respect you deserve with our privacy-first apps.',
     all: 'All Downloads',
     computers_title: 'Computers',
     computers_description: `Windows, macOS or Linux. Desktop or laptop.
@@ -100,18 +116,74 @@ export default {
     mobile_title: 'Mobile devices',
     mobile_description: 'On smartphones or tablets. Take Bloom everywhere with you.',
     coming_soon: 'Coming soon',
+    cli: 'See CLI instructions',
+  },
+  pricing: {
+    title: 'Pricing',
+    title2: 'Save big with Bloom',
+    title3: 'Questions?',
+    explore_faq: 'Explore the FAQ',
+    month: 'month',
+    others: 'Others',
+  },
+  faq: {
+    title: 'Frequently Asked Questions',
+    q1: 'How secure are my data?',
+    a1: `Some of your most personal moments are shared on WhatsApp, which is why we built end-to-end encryption.
+      We use state of the art cryptography
+      (<a href="https://tools.ietf.org/html/draft-irtf-cfrg-xchacha-03" target="_blank" rel="noopener noreferer">XChaCha20Poly1305</a>,
+      <a href="https://en.wikipedia.org/wiki/Argon2" target="_blank" rel="noopener noreferer">Argon2id</a>,
+      <a href="https://en.wikipedia.org/wiki/BLAKE_(hash_function)" target="_blank" rel="noopener noreferer">Blake2b</a>)
+      to securely store your all your data.
+      Your data are encrypted on your own devices and (even if we wanted) we can't read them.
+      You can learn more about our cryptographic architecture on
+      <a href="https://gitlab.com/bloom42/bloom/-/wikis/cryptography" target="_blank" rel="noopener noreferer">the wiki</a>.<br />
+      Also, we do not store financial data ourselves, we use  <a href="https://stripe.com" target="_blank" rel="noopener noreferer">Stripe</a>.`,
+    q2: 'Where the encrypted data are stored?',
+    a2: `The <a href="https://en.wikipedia.org/wiki/End-to-end_encryption" target="_blank" rel="noopener noreferer">end-to-end</a>
+      encrypted data are stored in a  <a href="scaleway.com" target="_blank" rel="noopener noreferer">Scaleway</a>
+      datacenter in a privacy friendly country: France.`,
+    q3: 'Why Bloom is more ethical than other service providers?',
+    a3: `Bloom is <b>100% Open Source</b>. Anyone can inspect how Bloom works.
+      Also, there are no ads, no affiliate marketing, no creepy tracking.
+      Just open technology for a fast, simple, and secure experience.`,
+    q4: 'Why do I need to pay to store my data while $BigCompany Drive is (almost) free?',
+    a4: `When you don't pay for a service, YOU are the product. <br />
+      Your personal data are either shared
+      with third party advertisers, or algorithms are applied to your data to sell you more and more products
+      you don't need, or even influence elections. <br />
+      On the other side, with Bloom, we work for the people who value respect and privacy: You.
+      Not investors, not advertisers.`,
+    // On the other side, with Bloom, your data are encrypted and are not at the mercy of a
+    // tyranic government,
+    // a rogue employee, or an over jealous conjoint.`,
+    q5: 'I had a very bad experience with $BigCompany customer support, is yours better?',
+    a5: `Being an hulan scale company, we do our best to provide a fast and friendly support. <br />
+      The people we value are our customers paying us, not the advertisers.`,
+    q6: 'Do you issue refunds?',
+    a6: `We do not issue refunds, but we offer a free tier
+        to allow you to test our applications before subscribing.`,
+    q7: 'What happens if I forgot my password and all my devices are signed out?',
+    a7: `Due to how encryption works, unfortunately, if you lose your password and all your devices are logged out, you lose all your data. <br />
+    If you forget your password but at least one of your devices is signed in, you can normally change your password, without losing nothing. <br />
+    We recommend you to note your account's password on a sheet of paper and to hide it somewhere.`,
+    q8: 'Why Bloom is an application and not available through web browsers?',
+    a8: `In the beginning Bloom was available through web browsers. But after some time we were not satisfied with the poor experience it provided
+    and the tradeoffs we had to make. This is why we decided to switch to native applications only. It allows
+    offline support, strong encryption, better performance. We want Bloom to be as resilient as possible and the web does not provide
+    this feature.`,
   },
   features: {
-    // title: 'Our mission: Empowering people',
     title: 'A safe place for all your data',
+    solution: 'That\'s why we built Bloom',
     drive_description: `A safe place for all your files. Bloom Drive is end to end encrypted.<br />
-    <b>2GB free.</b>`,
+    <b>1GB free.</b>`,
     drive: {
       description: 'A safe place for all your files',
       feature1: {
         name: 'Store any file',
         description: `Keep photos, stories, designs, drawings, recordings, videos, and more.
-        Your first <b>2GB</b> of storage are free.`,
+        Your first <b>1GB</b> of storage are free.`,
       },
       feature2: {
         name: 'See your stuff anywhere',
@@ -247,7 +319,7 @@ export default {
     seriously and work hard to protect our customers and their data. Your input and feedback
       on our security is greatly appreciated.`,
     issues_title: 'Reporting Issues',
-    issues_description: `Send reports directly to <a href="mailto:security@bloom.sh">security@bloom.sh</a>
+    issues_description: `Send reports directly to <a href="mailto:hello@bloom.sh">hello@bloom.sh</a>
       and we will get back to you faster than the light.`,
     hall_title: 'Hall of fame',
   },

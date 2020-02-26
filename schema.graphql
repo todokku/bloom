@@ -1,0 +1,464 @@
+####################################################################################################
+## Scalars & Enums
+####################################################################################################
+
+scalar Time
+scalar Bytes
+scalar Int64
+
+enum SessionDeviceOS {
+  LINUX
+  MACOS
+  WINDOWS
+  ANDROID
+  IOS
+  OTHER
+}
+
+enum SessionDeviceType {
+  TV
+  CONSOLE
+  MOBILE
+  TABLET
+  WATCH
+  COMPUTER
+  CAR
+  OTHER
+}
+
+enum GroupMemberRole {
+  ADMIN
+  MEMBER
+}
+
+enum BillingProduct {
+  FREE
+  BASIC
+  PRO
+  ULTRA
+}
+
+####################################################################################################
+## Queries & Types
+####################################################################################################
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type User {
+  id: ID
+  createdAt: Time
+  avatarUrl: String
+  username: String!
+  firstName: String
+  lastName: String
+  email: String
+  displayName: String!
+  bio: String!
+  isAdmin: Boolean!
+  groups: GroupConnection
+  paymentMethods: PaymentMethodConnection
+  invoices: InvoiceConnection
+  sessions: SessionConnection
+  groupInvitations: GroupInvitationConnection
+  subscription: BillingSubscription
+}
+
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type UserEdge {
+  cursor: String!
+  node: User
+}
+
+
+type PaymentMethod {
+  id: ID!
+  createdAt: Time!
+  cardLast4: String!
+  cardExpirationMonth: Int!
+  cardExpirationYear: Int!
+  isDefault: Boolean!
+}
+
+type PaymentMethodConnection {
+  edges: [PaymentMethodEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type PaymentMethodEdge {
+  cursor: String!
+  node: PaymentMethod
+}
+
+
+type Group {
+  id: ID
+  createdAt: Time
+  avatarUrl: String
+  name: String!
+  description: String!
+  members: GroupMemberConnection
+  invitations: GroupInvitationConnection
+  subscription: BillingSubscription
+}
+
+type GroupConnection {
+  edges: [GroupEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type GroupEdge {
+  cursor: String!
+  node: Group
+}
+
+type GroupMemberConnection {
+  edges: [GroupMemberEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type GroupMemberEdge {
+  cursor: String!
+  node: User
+  role: GroupMemberRole
+  joinedAt: Time
+}
+
+
+type GroupInvitation {
+  id: ID!
+  group: Group!
+  inviter: User!
+  invitee: User!
+}
+
+type GroupInvitationConnection {
+  edges: [GroupInvitationEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type GroupInvitationEdge {
+  cursor: String!
+  node: GroupInvitation
+}
+
+
+type Invoice {
+  id: ID!
+  createdAt: Time!
+  amount: Int64!
+  stripeId: String!
+  stripeHostedUrl: String!
+  stripePdfUrl: String!
+  paid: Boolean!
+}
+
+type InvoiceConnection {
+  edges: [InvoiceEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type InvoiceEdge {
+  cursor: String!
+  node: Invoice
+}
+
+
+type BillingPlan {
+  id: ID!
+  """amount to pay in cents"""
+  price: Int64!
+  name: String!
+  """plan's description, in HTML """
+  description: String!
+  isPublic: Boolean!
+  product: BillingProduct!
+  storage: Int64!
+  stripeId: String
+  subscribers: UserConnection
+}
+
+type BillingPlanConnection {
+  edges: [BillingPlanEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type BillingPlanEdge {
+  cursor: String!
+  node: BillingPlan
+}
+
+
+type BillingSubscription {
+  updatedAt: Time!
+  usedStorage: Int64!
+  stripeCustomerId: String
+  stripeSubscriptionId: String
+  plan: BillingPlan!
+}
+
+
+type Session {
+  id: ID!
+  createdAt: Time!
+  token: String
+  device: SessionDevice!
+}
+
+type SessionConnection {
+  edges: [SessionEdge]
+  pageInfo: PageInfo!
+  totalCount: Int64!
+}
+
+type SessionEdge {
+  cursor: String!
+  node: Session
+}
+
+
+type SessionDevice {
+  os: SessionDeviceOS!
+  type: SessionDeviceType!
+}
+
+
+type RegistrationStarted {
+  id: ID!
+}
+
+
+type SignedIn {
+  session: Session!
+  me: User!
+}
+
+
+type BloomMetadata {
+  os: String!
+  arch: String!
+  version: String!
+  gitCommit: String!
+}
+
+type Query {
+  """Get information about current user"""
+  me: User!
+  """Find an user"""
+  user(username: String): User
+  """Find all users"""
+  users: UserConnection
+  """Find a group"""
+  group(id: ID!): Group
+  """Find all users"""
+  groups: GroupConnection
+  """Find all billing plans visible to the current user"""
+  billingPlans: BillingPlanConnection
+  """Metadata about Bloom server"""
+  metadata: BloomMetadata
+  """The stripe public key to be used"""
+  stripePublicKey: String!
+}
+
+####################################################################################################
+## Mutations & Inputs
+####################################################################################################
+
+input RegisterInput {
+  displayName: String!
+  email: String!
+}
+
+input VerifyRegistrationInput {
+  """pending user id"""
+  id: ID!
+  code: String!
+}
+
+input CompleteRegistrationInput {
+  """pending user id"""
+  id: ID!
+  username: String!
+  authKey: Bytes!
+  device: SessionDeviceInput!
+}
+
+input SessionDeviceInput {
+  os: SessionDeviceOS!
+  type: SessionDeviceType!
+}
+
+input SignInInput {
+  username: String!
+  authKey: Bytes!
+  device: SessionDeviceInput!
+}
+
+input RevokeSessionInput {
+  id: ID!
+}
+
+input SendNewRegistrationCodeInput {
+  id: ID!
+}
+
+input CreateGroupInput {
+  name: String!
+  description: String!
+  """users to invite, by username"""
+  usersToInvite: [String!]!
+}
+
+input DeleteGroupInput {
+  id: ID!
+}
+
+input GroupInput {
+  """group id"""
+  id: ID!
+  name: String
+  description: String
+}
+
+input RemoveGroupMembersInput {
+  """group id"""
+  id: ID!
+  """members to remvove, by username"""
+  members: [String!]!
+}
+
+input AcceptGroupInvitationInput {
+  """group id"""
+  id: ID!
+}
+
+input CancelGroupInvitationInput {
+  """group id"""
+  id: ID!
+}
+
+input DeclineGroupInvitationInput {
+  """group id"""
+  id: ID!
+}
+
+input InviteUsersInGroupInput {
+  """group id"""
+  id: ID!
+  """users to invite, by username"""
+  users: [String!]!
+}
+
+input QuitGroupInput {
+  """group id"""
+  id: ID!
+}
+
+input BillingPlanInput {
+  id: ID
+  name: String!
+  product: BillingProduct!
+  """the strip id of the stripe plan. starting with 'plan_'"""
+  stripeId: String!
+  """HTML description"""
+  description: String!
+  isPublic: Boolean!
+  storage: Int64!
+}
+
+input DeleteBillingPlanInput {
+  id: ID!
+}
+
+"""if groupId and userId are null (reserved for admins), add to current user"""
+input UpdateBillingSubscriptionInput {
+  planId: ID!
+  userId: String
+  groupId: String
+}
+
+input AddPaymentMethodInput {
+  stripeId: String!
+  """if groupId is null, add to current user"""
+  groupId: String
+}
+
+"""remove payment method with `id`"""
+input RemovePaymentMethodInput {
+  id: ID!
+}
+
+"""set payment method with `id` as the default one"""
+input ChangeDefaultPaymentMethodInput {
+  id: ID!
+}
+
+input UserProfileInput {
+  """id is reserved for admins"""
+  id: ID
+  displayName: String
+  bio: String
+  firstName: String
+  lastName: String
+}
+
+type Mutation {
+  # users
+  """Start registration"""
+  register(input: RegisterInput!): RegistrationStarted!
+  """Verify pending account"""
+  verifyRegistration(input: VerifyRegistrationInput!): Boolean!
+  sendNewRegistrationCode(input: SendNewRegistrationCodeInput!): Boolean!
+  """Complete registration and create account"""
+  completeRegistration(input: CompleteRegistrationInput!): SignedIn!
+  """Sign in"""
+  signIn(input: SignInInput!): SignedIn!
+  """Revoke a session. Use it for sign out."""
+  revokeSession(input: RevokeSessionInput!): Boolean!
+  """Update an user profile, both private and public information"""
+  updateUserProfile(input: UserProfileInput!): User!
+
+  # groups
+  """Create a group"""
+  createGroup(input: CreateGroupInput!): Group!
+  """Delete a group"""
+  deleteGroup(input: DeleteGroupInput!): Boolean!
+  """Update a group information"""
+  updateGroup(input: GroupInput!): Group!
+  """Remove users from a group"""
+  removeGroupMembers(input: RemoveGroupMembersInput!): Group!
+  """Invite users in a group"""
+  inviteUsersInGroup(input: InviteUsersInGroupInput!): Group!
+  """Accept a group invitaiton and join it"""
+  acceptGroupInvitation(input: AcceptGroupInvitationInput!): Boolean!
+  """Decline a group invitation"""
+  declineGroupInvitation(input: DeclineGroupInvitationInput!): Boolean!
+  """Cancel a group invitation"""
+  cancelGroupInvitation(input: CancelGroupInvitationInput!): Boolean!
+  """Quit a group"""
+  quitGroup(input: QuitGroupInput!): Boolean!
+
+  # billing
+  createBillingPlan(input: BillingPlanInput!): BillingPlan!
+  updateBillingPlan(input: BillingPlanInput!): BillingPlan!
+  deleteBillingPlan(input: DeleteBillingPlanInput!): Boolean!
+  updateBillingSubscription(input: UpdateBillingSubscriptionInput!): BillingSubscription!
+  addPaymentMethod(input: AddPaymentMethodInput!): PaymentMethod
+  removePaymentMethod(input: RemovePaymentMethodInput!): Boolean!
+  changeDefaultPaymentMethod(input: ChangeDefaultPaymentMethodInput!): PaymentMethod!
+}

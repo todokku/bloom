@@ -50,7 +50,7 @@ Map<String, dynamic> _coreCall<P>(Message<P> message) {
   final ffi.Pointer<Utf8> cMessage = Utf8.toUtf8(jsonMessage);
 
   if (_call == null) {
-    final ffi.DynamicLibrary dylib = ffi.DynamicLibrary.open('libblmcore.so');
+    final ffi.DynamicLibrary dylib = ffi.DynamicLibrary.open('libbloomcore.so');
     _call = dylib.lookupFunction<BlmCoreCall, BlmCoreCall>('blmcore_call');
   }
 
@@ -63,9 +63,9 @@ Map<String, dynamic> _coreCall<P>(Message<P> message) {
   debugPrint('retMessage: $retMessage');
 
   final Map<String, dynamic> ret = jsonDecode(retMessage);
-  if (ret['type'] == 'error') {
-    final String errorMessage = ret['data']['message'];
+  if (ret['error'] != null) {
+    final String errorMessage = ret['error']['message'];
     throw errorMessage;
   }
-  return ret;
+  return ret['data'];
 }

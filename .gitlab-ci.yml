@@ -11,6 +11,8 @@ include:
   - template: Dependency-Scanning.gitlab-ci.yml
   - template: SAST.gitlab-ci.yml
   - template: Container-Scanning.gitlab-ci.yml
+  - template: Code-Quality.gitlab-ci.yml # https://docs.gitlab.com/ee/user/project/merge_requests/code_quality.html
+  - template: License-Management.gitlab-ci.yml # https://gitlab.com/help/user/application_security/license_compliance/index
 
 variables:
   # Go
@@ -20,7 +22,7 @@ variables:
   ANDROID_COMPILE_SDK: "28"
   ANDROID_BUILD_TOOLS: "28.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
-  FLUTTER_VERSION: "https://storage.googleapis.com/flutter_infra/releases/dev/linux/flutter_linux_v1.13.5-dev.tar.xz"
+  FLUTTER_VERSION: "https://storage.googleapis.com/flutter_infra/releases/dev/linux/flutter_linux_v1.14.6-dev.tar.xz"
 
   # desktop
   NODE_ENV: test
@@ -31,7 +33,7 @@ variables:
   POSTGRES_PASSWORD: postgres
   POSTGRES_DB: postgres
   POSTGRES_HOST: postgres
-  POSTGRES_VERSION: 12
+  POSTGRES_VERSION: 11
   DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
   HOST: http://localhost:8000
   AWS_SECRET_ACCESS_KEY: test
@@ -131,6 +133,17 @@ test:mobile:
 #   services:
 #     - postgres:$POSTGRES_VERSION
 
+test:server:
+  stage: test
+  image: $GO_IMAGE
+  tags:
+    - docker
+  script:
+    - cp bloom.default.sane bloom.sane
+    - make test
+  services:
+    - postgres:$POSTGRES_VERSION
+
 test:website:
   stage: test
   image: node:lts
@@ -166,7 +179,7 @@ build:core:
     - docker
   script:
     - cd core
-    - make build_desktop
+    - make desktop
 
 
 build:desktop:
@@ -224,6 +237,15 @@ build:mobile:
 #   artifacts:
 #     paths:
 #     - server/dist
+
+build:server:
+  stage: build
+  image: $GO_IMAGE
+  tags:
+    - docker
+  script:
+    - make build
+
 
 build:website:
   stage: build

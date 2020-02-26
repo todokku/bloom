@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app elevation="0">
+  <v-app-bar app elevate-on-scroll>
     <router-link to="/" class="blm-appbar-title">
       <v-toolbar-title class="headline" to="/">
         <span class="blm-rounded-elegance"><b>Bloom</b></span>
@@ -8,21 +8,24 @@
 
     <v-spacer></v-spacer>
 
-    <v-toolbar-items>
-      <v-btn
+    <v-toolbar-items class="">
+      <v-btn class="subtitle-1 font-weight-medium"
         text
         to="/download"
       >{{ $t('appbar.download') }}</v-btn>
-      <v-btn
-        text
-        to="/faq"
-        class="d-none d-sm-flex"
-      >{{ $t('footer.product.faq') }}</v-btn>
-      <v-btn
+      <v-btn class="subtitle-1 font-weight-medium"
         text
         to="/features"
         exact
       >{{ $t('appbar.features') }}</v-btn>
+      <v-btn class="subtitle-1 font-weight-medium d-none d-sm-flex"
+        text
+        to="/faq"
+      >{{ $t('footer.product.faq') }}</v-btn>
+      <v-btn class="subtitle-1 font-weight-medium d-none d-sm-flex"
+        text
+        to="/pricing"
+      >{{ $t('footer.product.pricing') }}</v-btn>
       <!-- <v-btn text>Help</v-btn> -->
       <blm-locales-menu />
     </v-toolbar-items>
@@ -51,5 +54,9 @@ export default class AppBar extends Vue {
 <style lang="scss" scoped>
 .blm-appbar-title {
   color: inherit;
+}
+
+.theme--light.v-app-bar.v-toolbar.v-sheet {
+  background-color: #fefefe;
 }
 </style>

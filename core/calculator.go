@@ -4,23 +4,23 @@ import (
 	"C"
 	"encoding/json"
 
-	"gitlab.com/bloom42/bloom/core/bloom/calculator"
+	"gitlab.com/bloom42/bloom/core/domain/calculator"
 )
 
-func HandleCalculatorMehtod(method string, jsonParams json.RawMessage) MessageOut {
+func handleCalculatorMehtod(method string, jsonParams json.RawMessage) MessageOut {
 	switch method {
 	case "calc":
 		var params calculator.CalcParams
 		err := json.Unmarshal(jsonParams, &params)
 		if err != nil {
-			return MethodNotFoundError(method, "calculator") // TODO(z0mbie42): return error
+			return InternalError(err) // TODO(z0mbie42): return error
 		}
 		res, err := calculator.Calc(params)
 		if err != nil {
-			return MethodNotFoundError(method, "calculator") // TODO(z0mbie42): return error
+			return InternalError(err) // TODO(z0mbie42): return error
 		}
 		return MessageOut{Data: res}
 	default:
-		return MethodNotFoundError(method, "calculator")
+		return methodNotFoundError(method, "calculator")
 	}
 }
