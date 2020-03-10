@@ -2,13 +2,18 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"gitlab.com/bloom42/bloom/core"
 	"gitlab.com/bloom42/libs/rz-go"
+	"gitlab.com/bloom42/libs/rz-go/log"
 )
+
+const UNIX_SOCKET = "/tmp/com.bloom42.bloom.sock"
 
 func handleElectronPost(w http.ResponseWriter, r *http.Request) {
 	var messageIn core.MessageIn
@@ -37,10 +42,6 @@ func handleElectronPost(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
-
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -48,13 +49,35 @@ func setupResponse(w *http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	// remove Unix socket if exists
+	os.Remove(UNIX_SOCKET)
+
+	// handle SIGKILL
+	signalCatcher := make(chan os.Signal, 2)
+	signal.Notify(signalCatcher, os.Interrupt,
+		syscall.SIGHUP,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+	go func() {
+		<-signalCatcher
+		err := os.Remove(UNIX_SOCKET)
+		if err != nil {
+			log.Fatal("error removing unix socket", rz.Err(err))
+		}
+		os.Exit(0)
+	}()
+
 	http.HandleFunc("/electronCall", handleElectronPost)
 
-	unixListener, err := net.Listen("unix", "/tmp/bloom42.sock")
+	unixListener, err := net.Listen("unix", UNIX_SOCKET)
 	if err != nil {
-		log.Fatal("listening to unix socket", rz.Err(err))
+		log.Fatal("error listening to unix socket", rz.Err(err))
 	}
 	defer unixListener.Close()
 
-	log.Fatal(http.Serve(unixListener, nil))
+	err = http.Serve(unixListener, nil)
+	if err != nil {
+		log.Fatal("error running server", rz.Err(err))
+	}
 }

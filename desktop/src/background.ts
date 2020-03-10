@@ -4,8 +4,13 @@ import {
   BrowserWindow,
   ipcMain,
 } from 'electron';
+import axios from 'axios';
 import { execFile, ChildProcess } from 'child_process';
 import { createProtocol } from './create_protocol';
+
+
+const CALL_URL = '/electronCall';
+const UNIX_SOCKET_PATH = '/tmp/com.bloom42.bloom.sock';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -63,6 +68,10 @@ function createWindow() {
   //   toggleWindow();
   // });
   // tray.setToolTip('Bloom');
+  let nodeIntegration = false;
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    nodeIntegration = true;
+  }
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -72,7 +81,7 @@ function createWindow() {
     minWidth: config.WINDOW_MIN_WIDTH,
     minHeight: config.WINDOW_MIN_HEIGHT,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration,
     },
     icon: config.WINDOW_ICON,
   });
@@ -148,3 +157,13 @@ ipcMain.on('server:start', () => {
 });
 
 ipcMain.on('server:stop', killChild);
+
+ipcMain.handle('core:call', async (event: any, message: any) => {
+  const res = await axios({
+    url: CALL_URL,
+    method: 'post',
+    data: message,
+    socketPath: UNIX_SOCKET_PATH,
+  });
+  return res;
+});

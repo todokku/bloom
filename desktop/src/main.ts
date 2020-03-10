@@ -5,9 +5,8 @@ import router from '@/router';
 import store, { Mutations } from '@/store';
 import vuetify from '@/plugins/vuetify';
 import filters from '@/filters';
-import core from './core';
-
-const { log, Level } = require('@bloom42/astro');
+import core from '@/core';
+import { log, Level } from '@/libs/rz';
 
 
 if (process.env.NODE_ENV === 'development') {

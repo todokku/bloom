@@ -1,7 +1,7 @@
 <p align="center">
   <img alt="bloom logo" src="assets/icons/bloom_256.png" height="180" />
   <h3 align="center">Bloom</h3>
-  <p align="center">A safe place for all your data (Android, IOS, Linux, MacOS, Windows, CLI)</p>
+  <p align="center">A safe place for all your data (Android, IOS, Linux, MacOS, CLI)</p>
 </p>
 
 You no longer trust tech monopolies with your data?<br/>
@@ -21,11 +21,12 @@ Why? How? What? 👉 Read the launch post: https://fatalentropy.com/bloom-a-free
 
 1. [Download](#download)
 2. [Documentation](#documentation)
-3. [Development instructions](#development-instructions)
-4. [Contributing](#contributing)
-5. [Forum](#contributing)
-6. [Licensing](#licensing)
-7. [Security](#security)
+3. [Roadmap](#roadmap)
+4. [Development instructions](#development-instructions)
+5. [Contributing](#contributing)
+6. [Forum](#contributing)
+7. [Licensing](#licensing)
+8. [Security](#security)
 
 --------
 
@@ -34,14 +35,21 @@ Why? How? What? 👉 Read the launch post: https://fatalentropy.com/bloom-a-free
 Android: [Google play store](https://play.google.com/store/apps/details?id=com.bloom42.bloomx) <br/>
 iOS: Coming soon
 
-CLI: [See instructions](https://help.bloom.sh/en/article/how-to-install-the-command-line-client-b9350j) <br />
+CLI: Coming soom <br/><!-- [See instructions](https://help.bloom.sh/en/article/how-to-install-the-command-line-client-b9350j) <br /> -->
 Linux: Coming soom <br/>
+Docker: Coming soon <br/>
 MacOS: Coming soon <br/>
-Windows: Coming soon
+<!-- Windows: Coming soon <br/> -->
+
 
 ## Documentation
 
-See [the wiki](https://gitlab.com/bloom42/bloom/-/wikis)
+See the wiki: https://gitlab.com/bloom42/bloom/-/wikis/home
+
+
+## Roadmap
+
+See https://gitlab.com/bloom42/bloom/-/milestones
 
 
 ## Development instructions
@@ -60,9 +68,10 @@ https://gitlab.com/bloom42/wiki/-/wikis/organization/contributing for guidance.
 When you want to talk about something that does not necessarily fit issues, you can use the forum
 to connect with the community: https://gitlab.com/bloom42/forum
 
+
 ## Licensing
 
-See `LICENSE.txt` and https://gitlab.com/bloom42/wiki/-/wikis/organization/licensing
+See `LICENSE.txt` and https://bloom.sh/licensing
 
 
 ## Security

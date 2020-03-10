@@ -1,9 +1,6 @@
-import axios from 'axios';
+import { ipcRenderer } from 'electron';
 import * as models from '@/api/models';
-
-const { log } = require('@bloom42/astro');
-
-const CALL_URL = 'http://localhost:8042/electronCall';
+import { log } from '@/libs/rz';
 
 const Empty = {};
 
@@ -14,7 +11,7 @@ async function call(method: string, params: any): Promise<any> {
   });
   log.with({ msg: message }).debug('jsonMessage');
 
-  const res = await axios.post(CALL_URL, message);
+  const res: any = await ipcRenderer.invoke('core:call', message);
   log.with({ res: res.data }).debug('resMessage');
 
   const { data } = res;

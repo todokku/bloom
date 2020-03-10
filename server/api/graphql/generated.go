@@ -13,8 +13,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/vektah/gqlparser"
-	"github.com/vektah/gqlparser/ast"
+	gqlparser "github.com/vektah/gqlparser/v2"
+	"github.com/vektah/gqlparser/v2/ast"
 	"gitlab.com/bloom42/bloom/server/api/graphql/model"
 )
 
@@ -1592,7 +1592,7 @@ enum GroupMemberRole {
 
 enum BillingProduct {
   FREE
-  BASIC
+  LITE
   PRO
   ULTRA
 }
@@ -1986,7 +1986,7 @@ type Mutation {
   """Complete registration and create account"""
   completeRegistration(input: CompleteRegistrationInput!): SignedIn!
   """Sign in"""
-  signIn(input: SignInInput!):  SignedIn!
+  signIn(input: SignInInput!): SignedIn!
   """Revoke a session. Use it for sign out."""
   revokeSession(input: RevokeSessionInput!): Boolean!
   """Update an user profile, both private and public information"""

@@ -57,8 +57,6 @@
                   <li><v-icon color="success">mdi-check</v-icon> Torrents</li>
                   <li><v-icon color="success">mdi-check</v-icon> Calendar</li>
                   <li><v-icon color="success">mdi-check</v-icon> Contacts</li>
-                  <li><v-icon color="success">mdi-check</v-icon> Gallery</li>
-                  <li><v-icon color="success">mdi-check</v-icon> Music</li>
                   <li><v-icon color="success">mdi-check</v-icon> <b>Open Source</b></li>
                   <li><v-icon color="success">mdi-check</v-icon> <b>Private by design</b></li>
                   <li><v-icon color="success">mdi-check</v-icon> <b>Ethical by design</b></li>
@@ -141,15 +139,13 @@ export default class Pricing extends Vue {
         <li>1GB storage</li>
         <li>Notes</li>
         <li>QR Codes</li>
-        <li>Music</li>
-        <li>Gallery</li>
         <li>1 Bitflow download / day</li>
         <li>Community Support</li>
       </ul>
       `,
     },
     {
-      name: 'Basic',
+      name: 'Lite',
       price: 7,
       description: `
       <ul>
@@ -169,7 +165,7 @@ export default class Pricing extends Vue {
       price: 14,
       description: `
       <ul>
-        <li><b>All features from Basic</b></li>
+        <li><b>All features from Lite</b></li>
         <li class="text-center bold"><b>+</b></li>
 
         <li>400GB storage</li>
