@@ -7,7 +7,8 @@ import (
 func ListArchived() (Notes, error) {
 	ret := Notes{Notes: []Note{}}
 
-	rows, err := db.DB.Query(`SELECT id, created_at, updated_at, archived_at, title, body, color, is_pinned
+	rows, err := db.DB.Query(`SELECT id, created_at, updated_at, archived_at, title, body, color,
+		is_pinned
 		FROM notes WHERE archived_at IS NOT NULL ORDER BY updated_at DESC`)
 	if err != nil {
 		return ret, err

@@ -2,19 +2,20 @@ package db
 
 import (
 	"bytes"
-	"database/sql"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 	"gitlab.com/bloom42/bloom/core/domain/kernel"
 )
 
-var DB *sql.DB
+var DB *sqlx.DB
+var DBFilePath string
 
-func homeDir() (string, error) {
+func appDirectory() (string, error) {
 	if runtime.GOOS == "android" {
 		data, err := ioutil.ReadFile("/proc/self/cmdline")
 		if err != nil {
@@ -31,7 +32,7 @@ func homeDir() (string, error) {
 }
 
 func dbDir() (string, error) {
-	return homeDir()
+	return appDirectory()
 	//return filepath.Join(home, "db"), err
 }
 
@@ -55,12 +56,12 @@ func Init() error {
 		return err
 	}
 
-	dbPath, err := dbPath()
+	DBFilePath, err = dbPath()
 	if err != nil {
 		return err
 	}
 
-	DB, err = sql.Open("sqlite3", dbPath)
+	DB, err = sqlx.Open("sqlite3", DBFilePath)
 	if err != nil {
 		return err
 	}
@@ -121,6 +122,19 @@ func Init() error {
 	CREATE TABLE IF NOT EXISTS preferences (
 		key TEXT PRIMARY KEY NOT NULL,
 		value TEXT NOT NULL
+	)
+	`)
+	if err != nil {
+		return err
+	}
+
+	_, err = DB.Exec(`
+	CREATE TABLE IF NOT EXISTS groups (
+		id TEXT PRIMARY KEY NOT NULL,
+		created_at DATETIME NOT NULL,
+		name TEXT NOT NULL,
+		description TEXT NOT NULL,
+		avatar_url TEXT
 	)
 	`)
 	if err != nil {

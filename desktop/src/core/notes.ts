@@ -1,24 +1,20 @@
-/* eslint-disable camelcase */
-
-enum Method {
-  ListNotes = 'notes.list_notes',
-  ListArchived = 'notes.list_archived',
-  CreateNote = 'notes.create_note',
-  UpdateNote = 'notes.update_note',
-  DeleteNote = 'notes.delete_note',
+export enum Method {
+  ListNotes = 'notes.listNotes',
+  ListArchived = 'notes.listArchived',
+  CreateNote = 'notes.createNote',
+  UpdateNote = 'notes.updateNote',
+  DeleteNote = 'notes.deleteNote',
 }
-
-export { Method };
 
 export type Note = {
   id: string,
   title: string,
   body: string,
-  created_at: Date,
-  updated_at: Date,
+  createdAt: Date,
+  updatedAt: Date,
   color: string,
-  archived_at: Date | null,
-  is_pinned: boolean,
+  archivedAt: Date | null,
+  isPinned: boolean,
 }
 
 export type Notes = {

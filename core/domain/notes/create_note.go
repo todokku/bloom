@@ -1,9 +1,10 @@
 package notes
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"gitlab.com/bloom42/bloom/core/db"
-	"time"
 )
 
 func CreateNote(params CreateNoteParams) (Note, error) {
@@ -20,7 +21,8 @@ func CreateNote(params CreateNoteParams) (Note, error) {
 		IsPinned:   false,
 	}
 
-	stmt, err := db.DB.Prepare(`INSERT INTO notes (id, created_at, updated_at, archived_at, title, body, color, is_pinned)
+	stmt, err := db.DB.Prepare(`INSERT INTO notes (id, created_at, updated_at, archived_at, title,
+		body, color, is_pinned)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
 		return note, err

@@ -73,12 +73,12 @@ export default {
   licensing: {
     title: 'Licensing',
     body: `Our philosophy is simple: either you contribute back to the commons by opening your work
-    too, either you pay us for our work. <br /><br />
-    Ou time is as valuable as yours and we don't work for free.<br /><br />
+    too, either you contribute by financing our work. <br /><br />
+    Our time is as valuable as yours and we don't work for free.<br /><br />
 
     We use contaminating licenses to
     avoid behaviors which will damage our vision of Open Source/Free Software and ensure
-    that those who benefits from our software contribute back to the community
+    that those who benefits from our work contribute back to the community
     by releasing the modified version and the tooling around, or by funding the project.<br /><br />
 
     You can find the license for each project in the <code>LICENSE.txt</code> file
